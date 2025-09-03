@@ -31,3 +31,37 @@ sliders.forEach((slider, index) => {
     updateSlider(slider, valueBoxes[index])
   );
 });
+
+// COLOR BOX LOGIC WILL APPEAR HERE
+// ------
+// ------
+// ------
+
+// CANVAS LOGIC
+const previewSquare = document.getElementById("previewSquare");
+const widthSlider = document.getElementById("widthBar");
+const heightSlider = document.getElementById("heightBar");
+
+// Compute slider value mapped to 0–100% respecting min/max
+function sliderToPercent(slider) {
+  const max = parseFloat(slider.max);
+  const value = parseFloat(slider.value);
+  return (value / max) * 100;
+}
+
+let sizeRaf = null;
+function updateSquareSize() {
+  if (sizeRaf != null) return; // batch rapid inputs
+  sizeRaf = requestAnimationFrame(() => {
+    sizeRaf = null;
+    const widthPercent = sliderToPercent(widthSlider);
+    const heightPercent = sliderToPercent(heightSlider);
+    previewSquare.style.width = widthPercent + "%";
+    previewSquare.style.height = heightPercent + "%";
+  });
+}
+
+// Initialize and bind
+updateSquareSize();
+widthSlider?.addEventListener("input", updateSquareSize);
+heightSlider?.addEventListener("input", updateSquareSize);

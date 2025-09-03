@@ -21,7 +21,8 @@
 <body class="bg-[var(--bg)] w-full h-screen">
     <div class="xl:w-[60%] xl:mx-auto w-full h-auto bg-[var(--bg)]">
         <header class="relative p-6 xl:pt-7">
-            <h1 class="font-geist-mono text-2xl lg:text-3xl text-[var(--text)] text-center">Superellipse Generator</h1>
+            <h1 class="font-geist-mono text-2xl lg:text-3xl text-[var(--text)] text-center tracking-[-2px]">Superellipse
+                Generator</h1>
             <!-- dark mode toggle -->
             <div class="flex justify-center absolute top-6 right-6">
                 <button id="themeToggle"
@@ -33,9 +34,9 @@
         </header>
 
         <!-- main -->
-        <div class="flex flex-col lg:flex-row h-auto w-auto gap-8 px-5 lg:px-6">
+        <div class="flex flex-col lg:flex-row h-auto w-auto gap-8 lg:gap-0 lg:justify-between px-5 lg:px-6 mt-4">
             <!-- parameters panel -->
-            <div class="font-geist-mono bg-[var(--panel-bg)] rounded-xl lg:flex-1 p-6"
+            <div class="font-geist-mono bg-[var(--panel-bg)] rounded-xl lg:w-[48.5%] p-6"
                 style="border: var(--border); box-shadow: var(--shadow);">
                 <h2 class="text-lg text-[var(--text)] mb-6">Parameters</h2>
 
@@ -81,13 +82,13 @@
                 </div>
 
                 <!-- Color -->
-                <div class="mb-6">
+                <div class="mb-6 flex items-center justify-between">
                     <label class="block text-[12px] font-medium text-[var(--text)] mb-2">Color</label>
                     <div class="flex items-center gap-3">
                         <input type="color" id="color" value="#000000"
-                            class="w-8 h-8 border border-gray-300 rounded cursor-pointer">
-                        <div id="colorValue"
-                            class="px-2 py-1 text-sm rounded-xl text-[var(--text)] bg-[var(--panel-bg)] text-center"
+                            class="w-6 h-6 border border-gray-300 rounded cursor-pointer">
+                        <div id="colorValueBox"
+                            class="value-box w-17 px-2 py-1 text-[12px] rounded-xl text-[var(--text)] bg-[var(--panel-bg)] text-center"
                             style="border: var(--border); box-shadow: var(--shadow);">#000000</div>
                     </div>
                 </div>
@@ -105,8 +106,18 @@
             </div>
 
             <!-- canvas -->
-            <div class="bg-[var(--panel-bg)] lg:flex-1 rounded-lg h-8"
-                style="border: var(--border); box-shadow: var(--shadow);">
+            <div class="h-auto lg:w-[48.5%]">
+                <!-- canvas' outer box -->
+                <div class="bg-[var(--panel-bg)] lg:flex-1 rounded-xl h-auto p-6"
+                    style="border: var(--border); box-shadow: var(--shadow);">
+                    <!-- canvas' inner/grid box -->
+                    <div class="relative w-full aspect-square grid-bg flex items-center justify-center">
+                        <div id="previewSquare"
+                            class="flex items-center justify-center rounded-[32px] bg-gradient-to-br from-[#3a3a3a]/90 to-[#1a1a1a]/90 ring-2 ring-black dark:ring-white shadow-[0_1px_1px_rgba(0,0,0,0.25),0_8px_24px_rgba(0,0,0,0.08)] surface-smooth">
+                            <div class="w-[3px] h-[3px] rounded-full bg-[#384252]"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
