@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Superellipse Generator</title>
+    <!-- font family cdn -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Abel&family=Anek+Tamil:wght@100..800&family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,100;1,9..40,100&family=Geist+Mono:wght@100..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz@0,14..32;1,14..32&family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <!-- dark mode icon's cdn -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=bedtime,wb_sunny" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="bg-[var(--bg)] w-full h-screen">
+    <div class="xl:w-[60%] xl:mx-auto w-full h-auto bg-[var(--bg)]">
+        <header class="relative p-6 xl:pt-7">
+            <h1 class="font-geist-mono text-2xl lg:text-3xl text-[var(--text)] text-center">Superellipse Generator</h1>
+            <!-- dark mode toggle -->
+            <div class="flex justify-center absolute top-6 right-6">
+                <button id="themeToggle"
+                    class="theme-toggle w-8 h-8 rounded-xl text-[var(--text)] flex items-center justify-center"
+                    aria-label="Toggle dark mode" title="Toggle dark mode"
+                    style="border: var(--border); box-shadow: var(--shadow);">
+                </button>
+            </div>
+        </header>
+
+        <!-- main -->
+        <div class="flex flex-col lg:flex-row h-auto w-auto gap-8 px-5 lg:px-6">
+            <!-- parameters panel -->
+            <div class="font-geist-mono bg-[var(--panel-bg)] rounded-xl lg:flex-1 p-6"
+                style="border: var(--border); box-shadow: var(--shadow);">
+                <h2 class="text-lg text-[var(--text)] mb-6">Parameters</h2>
+
+                <!-- Eccentricity (n) -->
+                <div class="mb-6 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-[12px] font-medium text-[var(--text)] mb-2">Eccentricity (n)</label>
+                        <div id="eccentricityValueBox"
+                            class="value-box w-14 px-2 py-1 text-[12px] rounded-xl text-[var(--text)] bg-[var(--panel-bg)] text-center"
+                            style="border: var(--border); box-shadow: var(--shadow);"></div>
+                    </div>
+                    <div>
+                        <input type="range" min="0.5" max="10" step="0.1" value="2.9" class="slider w-full"
+                            id="eccentricityBar">
+                    </div>
+                </div>
+
+                <!-- Width -->
+                <div class="mb-6 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-[12px] font-medium text-[var(--text)] mb-2">Width</label>
+                        <div id="widthValueBox"
+                            class="value-box w-14 px-2 py-1 text-[12px] rounded-xl text-[var(--text)] bg-[var(--panel-bg)] text-center"
+                            style="border: var(--border); box-shadow: var(--shadow);"></div>
+                    </div>
+                    <div>
+                        <input type="range" min="50" max="395" step="5" value="200" class="slider w-full" id="widthBar">
+                    </div>
+                </div>
+
+                <!-- Height -->
+                <div class="mb-6 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-[12px] font-medium text-[var(--text)] mb-2">Height</label>
+                        <div id="heightValueBox"
+                            class="value-box w-14 px-2 py-1 text-[12px] rounded-xl text-[var(--text)] bg-[var(--panel-bg)] text-center"
+                            style="border: var(--border); box-shadow: var(--shadow);"></div>
+                    </div>
+                    <div>
+                        <input type="range" min="50" max="395" step="5" value="200" class="slider w-full"
+                            id="heightBar">
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="mb-6">
+                    <label class="block text-[12px] font-medium text-[var(--text)] mb-2">Color</label>
+                    <div class="flex items-center gap-3">
+                        <input type="color" id="color" value="#000000"
+                            class="w-8 h-8 border border-gray-300 rounded cursor-pointer">
+                        <div id="colorValue"
+                            class="px-2 py-1 text-sm rounded-xl text-[var(--text)] bg-[var(--panel-bg)] text-center"
+                            style="border: var(--border); box-shadow: var(--shadow);">#000000</div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="mt-8 pt-4 border-t border-gray-200">
+                    <h3 class="text-sm font-medium text-[var(--text)] mb-3">Legend</h3>
+                    <div class="space-y-1 text-sm text-[var(--muted)]">
+                        <div>n = 1: Diamond</div>
+                        <div>n = 2: Circle</div>
+                        <div>n > 2: Rounded rectangle</div>
+                        <div>n → ∞: Rectangle</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- canvas -->
+            <div class="bg-[var(--panel-bg)] lg:flex-1 rounded-lg h-8"
+                style="border: var(--border); box-shadow: var(--shadow);">
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="darkmode.js"></script>
+</body>
+
+</html>
