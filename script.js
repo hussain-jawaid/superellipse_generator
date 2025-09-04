@@ -1,36 +1,39 @@
-// SLIDER FEATURE
-// Get all slider elements
-const sliders = document.querySelectorAll(".slider");
-const valueBoxes = document.querySelectorAll(".value-box");
+class Slider {
+  constructor(slidersId, valueBoxesId) {
+    this.sliders = document.querySelectorAll(slidersId);
+    this.valueBoxes = document.querySelectorAll(valueBoxesId);
+    this.init();
+    window.updateSlider = this.updateSlider;
+  }
 
-// Generic function to update any slider
-function updateSlider(slider, valueBox) {
-  const { value, min, max } = slider;
-  const percent = ((value - min) / (max - min)) * 100;
+  updateSlider(slider, valueBox) {
+    const value = Number(slider.value);
+    const min = Number(slider.min);
+    const max = Number(slider.max);
+    const percent = ((value - min) / (max - min)) * 100;
 
-  valueBox.textContent = value;
+    // show the slider value it's appropiate value box
+    valueBox.textContent = value;
 
-  // Check if dark mode is active
-  const isDarkMode = document.documentElement.classList.contains("dark");
+    // Check if dark mode is active
+    const isDarkMode = document.documentElement.classList.contains("dark");
 
-  if (isDarkMode) {
-    // Dark mode: white progress, dark gray background
-    slider.style.background = `linear-gradient(to right, #ffffff ${percent}%, #374151 ${percent}%)`;
-  } else {
-    // Light mode: black progress, light gray background
-    slider.style.background = `linear-gradient(to right, #000000 ${percent}%, #e5e7eb ${percent}%)`;
+    if (isDarkMode) {
+      slider.style.background = `linear-gradient(to right, #ffffff ${percent}%, #374151 ${percent}%)`;
+    } else {
+      slider.style.background = `linear-gradient(to right, #000000 ${percent}%, #e5e7eb ${percent}%)`;
+    }
+  }
+
+  init() {
+    this.sliders.forEach((slider, index) => {
+      this.updateSlider(slider, this.valueBoxes[index]);
+      slider.addEventListener("input", () =>
+        this.updateSlider(slider, this.valueBoxes[index])
+      );
+    });
   }
 }
-
-// Make updateSlider globally accessible for darkmode.js
-window.updateSlider = updateSlider;
-
-sliders.forEach((slider, index) => {
-  updateSlider(slider, valueBoxes[index]);
-  slider.addEventListener("input", () =>
-    updateSlider(slider, valueBoxes[index])
-  );
-});
 
 // COLOR BOX LOGIC WILL APPEAR HERE
 // ------
@@ -65,3 +68,7 @@ function updateSquareSize() {
 updateSquareSize();
 widthSlider?.addEventListener("input", updateSquareSize);
 heightSlider?.addEventListener("input", updateSquareSize);
+
+document.addEventListener("DOMContentLoaded", () => {
+  new Slider(".slider", ".value-box");
+});
