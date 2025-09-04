@@ -1,4 +1,4 @@
-class Slider {
+class SliderPanel {
   constructor(slidersId, valueBoxesId) {
     this.sliders = document.querySelectorAll(slidersId);
     this.valueBoxes = document.querySelectorAll(valueBoxesId);
@@ -35,35 +35,91 @@ class Slider {
   }
 }
 
-// CANVAS LOGIC
-const previewSquare = document.getElementById("previewSquare");
-const widthSlider = document.getElementById("widthBar");
-const heightSlider = document.getElementById("heightBar");
+class DrawSuperellipse {
+  constructor(width, height, eccentricity, color) {
+    this.draw(width, height, eccentricity, color);
+    window.draw = this.draw;
+  }
 
-// Compute slider value mapped to 0–100% respecting min/max
-function sliderToPercent(slider) {
-  const max = parseFloat(slider.max);
-  const value = parseFloat(slider.value);
-  return (value / max) * 100;
+  draw(width, height, eccentricity, color) {
+    const A = width / 2;
+    const B = height / 2;
+    const EXPONENT = eccentricity;
+    const STEPS = 512;
+
+    const pow = Math.pow,
+      abs = Math.abs,
+      sign = Math.sign;
+    const pathParts = [];
+
+    for (let i = 0; i <= STEPS; i++) {
+      const t = (i / STEPS) * Math.PI * 2;
+      const ct = Math.cos(t);
+      const st = Math.sin(t);
+
+      // Parametric form: x = a * sgn(cos t) * |cos t|^(2/n), y = b * sgn(sin t) * |sin t|^(2/n)
+      const x = A * sign(ct) * pow(abs(ct), 2 / EXPONENT);
+      const y = B * sign(st) * pow(abs(st), 2 / EXPONENT);
+
+      pathParts.push((i === 0 ? "M" : "L") + x.toFixed(3) + " " + y.toFixed(3));
+    }
+    pathParts.push("Z");
+
+    const pathElement = document.getElementById("superellipsePath");
+    if (pathElement) {
+      pathElement.setAttribute("d", pathParts.join(" "));
+      pathElement.setAttribute("fill", color);
+    }
+  }
 }
 
-let sizeRaf = null;
-function updateSquareSize() {
-  if (sizeRaf != null) return; // batch rapid inputs
-  sizeRaf = requestAnimationFrame(() => {
-    sizeRaf = null;
-    const widthPercent = sliderToPercent(widthSlider);
-    const heightPercent = sliderToPercent(heightSlider);
-    previewSquare.style.width = widthPercent + "%";
-    previewSquare.style.height = heightPercent + "%";
-  });
+class SuperellipseController {
+  constructor(eccSliderId, wSliderId, hSliderId, cPickerId, sEllipsePathId) {
+    this.eccentricitySlider = document.getElementById(eccSliderId);
+    this.widthSlider = document.getElementById(wSliderId);
+    this.heightSlider = document.getElementById(hSliderId);
+    this.colorPicker = document.getElementById(cPickerId);
+    this.superellipsePath = document.getElementById(sEllipsePathId);
+    this.init();
+  }
+
+  updateSuperellipse() {
+    const eccentricity = parseFloat(this.eccentricitySlider.value);
+    const width = parseFloat(this.widthSlider.value);
+    const height = parseFloat(this.heightSlider.value);
+    const color = this.colorPicker.value;
+    window.draw(width, height, eccentricity, color);
+  }
+
+  init() {
+    this.eccentricitySlider.addEventListener(
+      "input",
+      this.updateSuperellipse.bind(this)
+    );
+    this.widthSlider.addEventListener(
+      "input",
+      this.updateSuperellipse.bind(this)
+    );
+    this.heightSlider.addEventListener(
+      "input",
+      this.updateSuperellipse.bind(this)
+    );
+    this.colorPicker.addEventListener(
+      "input",
+      this.updateSuperellipse.bind(this)
+    );
+  }
 }
 
-// Initialize and bind
-updateSquareSize();
-widthSlider?.addEventListener("input", updateSquareSize);
-heightSlider?.addEventListener("input", updateSquareSize);
-
+// Usage
 document.addEventListener("DOMContentLoaded", () => {
-  new Slider(".slider", ".value-box");
+  new SliderPanel(".slider", ".value-box");
+  new DrawSuperellipse(200, 200, 2.9, "#000000");
+  new SuperellipseController(
+    "eccentricityBar",
+    "widthBar",
+    "heightBar",
+    "color",
+    "superellipsePath"
+  );
 });
