@@ -106,16 +106,17 @@
                 </div>
             </div>
 
-            <!-- canvas -->
-            <div class="h-auto lg:w-[48.5%]">
+            <!-- right side panel -->
+            <div class="h-full lg:w-[48.5%] flex flex-col items-center gap-3">
                 <!-- canvas' outer box -->
-                <div class="bg-[var(--panel-bg)] lg:flex-1 rounded-xl h-auto p-6"
+                <div class="bg-[var(--panel-bg)] rounded-xl h-auto w-full p-6"
                     style="border: var(--border); box-shadow: var(--shadow);">
                     <!-- canvas' inner/grid box -->
-                    <div class="relative w-full aspect-square grid-bg flex items-center justify-center">
+                    <div class="relative w-full aspect-square grid-bg flex items-center justify-center overflow-hidden">
                         <!-- Superellipse (n = 0.6) -->
-                        <svg id="superellipseSvg" width="395" height="395" viewBox="-120 -120 240 240"
-                            xmlns="http://www.w3.org/2000/svg" aria-label="Superellipse diamond">
+                        <svg id="superellipseSvg" class="w-full h-full" viewBox="-200 -200 400 400"
+                            preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+                            aria-label="Superellipse diamond">
                             <defs>
                                 <!-- Gradient similar to your Tailwind bg-gradient-to-br -->
                                 <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
@@ -134,12 +135,31 @@
                         </svg>
                     </div>
                 </div>
+
+                <!-- ellipse info -->
+                <div class="bg-[var(--panel-bg)] px-6 py-2 rounded-xl flex items-center gap-4"
+                    style="border: var(--border); box-shadow: var(--shadow);">
+                    <div id="ellipseInfo" class="font-geist-mono flex items-center gap-2 text-xs">
+                        <span class="text-[var(--text)]">Current:</span>
+                        <div class="text-[var(--muted)]">
+                            <span id="ellipseInfoW">200</span> x
+                            <span id="ellipseInfoH">200</span>,
+                            n = <span id="ellipseInfoE">2.9</span>
+                        </div>
+                    </div>
+                    <div id="ellipseInfoColor" class="w-4 h-4 rounded-full"></div>
+                </div>
+
+                <!-- ellipse download buttons -->
             </div>
         </div>
-    </div>
-    <script src="script.js"></script>
-    <script src="darkmode.js"></script>
-    <script src="sliderPanel.js"></script>
+
+        <!-- JavaScript files -->
+        <script src="js/script.js"></script>
+        <script src="js/darkmode.js"></script>
+        <script src="js/sliderPanel.js"></script>
+        <script src="js/drawSuperellipse.js"></script>
+        <script src="js/superellipseController.js"></script>
 </body>
 
 </html>
