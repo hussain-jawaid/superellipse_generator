@@ -35,11 +35,6 @@ class Slider {
   }
 }
 
-// COLOR BOX LOGIC WILL APPEAR HERE
-// ------
-// ------
-// ------
-
 // CANVAS LOGIC
 const previewSquare = document.getElementById("previewSquare");
 const widthSlider = document.getElementById("widthBar");

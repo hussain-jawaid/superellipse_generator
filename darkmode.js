@@ -10,7 +10,6 @@ class ThemeManager {
     this.sliders = document.querySelectorAll(sliderSelector);
     this.valueBoxes = document.querySelectorAll(valueBoxSelector);
     this.storageKey = storageKey;
-
     this.init();
   }
 
