@@ -1,40 +1,3 @@
-class SliderPanel {
-  constructor(slidersId, valueBoxesId) {
-    this.sliders = document.querySelectorAll(slidersId);
-    this.valueBoxes = document.querySelectorAll(valueBoxesId);
-    this.init();
-    window.updateSlider = this.updateSlider;
-  }
-
-  updateSlider(slider, valueBox) {
-    const value = Number(slider.value);
-    const min = Number(slider.min);
-    const max = Number(slider.max);
-    const percent = ((value - min) / (max - min)) * 100;
-
-    // show the slider value it's appropiate value box
-    valueBox.textContent = value;
-
-    // Check if dark mode is active
-    const isDarkMode = document.documentElement.classList.contains("dark");
-
-    if (isDarkMode) {
-      slider.style.background = `linear-gradient(to right, #ffffff ${percent}%, #374151 ${percent}%)`;
-    } else {
-      slider.style.background = `linear-gradient(to right, #000000 ${percent}%, #e5e7eb ${percent}%)`;
-    }
-  }
-
-  init() {
-    this.sliders.forEach((slider, index) => {
-      this.updateSlider(slider, this.valueBoxes[index]);
-      slider.addEventListener("input", () =>
-        this.updateSlider(slider, this.valueBoxes[index])
-      );
-    });
-  }
-}
-
 class DrawSuperellipse {
   constructor(width, height, eccentricity, color) {
     this.draw(width, height, eccentricity, color);
@@ -69,6 +32,8 @@ class DrawSuperellipse {
     if (pathElement) {
       pathElement.setAttribute("d", pathParts.join(" "));
       pathElement.setAttribute("fill", color);
+      pathElement.setAttribute("fill-opacity", "0.7");
+      pathElement.setAttribute("stroke", color);
     }
   }
 }
@@ -113,13 +78,13 @@ class SuperellipseController {
 
 // Usage
 document.addEventListener("DOMContentLoaded", () => {
-  new SliderPanel(".slider", ".value-box");
+  new SliderPanel(".slider", ".value-box", "#colorPicker", "#colorValueBox");
   new DrawSuperellipse(200, 200, 2.9, "#000000");
   new SuperellipseController(
     "eccentricityBar",
     "widthBar",
     "heightBar",
-    "color",
+    "colorPicker",
     "superellipsePath"
   );
 });
