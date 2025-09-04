@@ -1,14 +1,8 @@
 class ThemeManager {
-  constructor(
-    toggleId,
-    sliderSelector,
-    valueBoxSelector,
-    storageKey = "prefers-dark"
-  ) {
+  constructor(toggleId, colorPickerId, storageKey = "prefers-dark") {
     this.root = document.documentElement;
     this.toggle = document.getElementById(toggleId);
-    this.sliders = document.querySelectorAll(sliderSelector);
-    this.valueBoxes = document.querySelectorAll(valueBoxSelector);
+    this.colorPicker = document.getElementById(colorPickerId);
     this.storageKey = storageKey;
     this.init();
   }
@@ -17,20 +11,17 @@ class ThemeManager {
   applyTheme(isDark) {
     this.root.classList.toggle("dark", Boolean(isDark));
     this.toggle.setAttribute("aria-pressed", String(Boolean(isDark)));
+    const color = this.colorPicker.value;
 
     // Change icon
     this.toggle.innerHTML = isDark
       ? `<span class="material-symbols-outlined" style="font-size: 1rem;">wb_sunny</span>`
       : `<span class="material-symbols-outlined" style="font-size: 1rem;">bedtime</span>`;
 
-    // Reapply slider styling after theme change
-    setTimeout(() => {
-      this.sliders.forEach((slider, index) => {
-        if (this.valueBoxes[index] && window.updateSlider) {
-          window.updateSlider(slider, this.valueBoxes[index]);
-        }
-      });
-    }, 0);
+    if ((isDark && color === "#000000") || (!isDark && color === "#ffffff")) {
+      this.colorPicker.value = isDark ? "#ffffff" : "#000000";
+      this.colorPicker.dispatchEvent(new Event("input", { bubbles: true }));
+    }
   }
 
   // Read from localStorage
@@ -76,5 +67,5 @@ class ThemeManager {
 
 // Usage
 document.addEventListener("DOMContentLoaded", () => {
-  new ThemeManager("themeToggle", ".slider", ".value-box");
+  new ThemeManager("themeToggle", "colorPicker");
 });
