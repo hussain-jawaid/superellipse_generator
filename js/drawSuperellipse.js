@@ -32,12 +32,19 @@ class DrawSuperellipse {
     if (pathElement) {
       pathElement.setAttribute("d", pathParts.join(" "));
       pathElement.setAttribute("fill", color);
-      pathElement.setAttribute("fill-opacity", "0.9");
+      pathElement.setAttribute("fill-opacity", "0.7");
       pathElement.setAttribute("stroke", color);
     }
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  new DrawSuperellipse(200, 200, 2.9, "#000000");
+  let initColor;
+  const root = document.documentElement;
+  if (root.classList.contains("dark")) {
+    initColor = "#ffffff";
+  } else {
+    initColor = "#000000";
+  }
+  new DrawSuperellipse(200, 200, 2.9, initColor);
 });
